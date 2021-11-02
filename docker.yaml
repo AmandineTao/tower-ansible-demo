@@ -3,6 +3,7 @@
   hosts: prod
   become: yes
   
+  
   pre_tasks:
     - name: Install pre-requisite packages
       yum:
@@ -37,6 +38,7 @@
       get_url:
         url: https://download.docker.com/linux/centos/docker-ce.repo
         dest: /etc/yum.repos.d/docker-ce.repo
+      become_user: root
 
     - name: Install Docker
       yum: 
