@@ -31,7 +31,7 @@
     - name: Install docker python
       pip:
         name: docker-py
-        executable: pip3
+        executable: /usr/local/bin/pip3
         
   tasks:
     - name: Add Docker CE repo
