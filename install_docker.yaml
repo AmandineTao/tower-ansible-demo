@@ -71,5 +71,5 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
-        executable: pip3
+        executable: /usr/local/bin/pip3
       become: yes
