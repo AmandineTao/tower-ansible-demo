@@ -20,6 +20,11 @@
         name: lvm2
         state: latest
 
+    - name: "Clean Docker repo if it exists"
+      file:
+        path: "/etc/yum.repos.d"
+        state: absent
+        
     - name: Add Docker repo
       get_url:
         url: https://download.docker.com/linux/centos/docker-ce.repo
