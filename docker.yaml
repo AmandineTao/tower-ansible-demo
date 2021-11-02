@@ -1,47 +1,53 @@
 ---
-- name: Install docker on a Centos 7 machine
+- name: Install docker
+  gather_facts: No
   hosts: prod
   become: yes
-  
-  pre_tasks:
-    - name: Install pre-requisite packages
-      yum:
-        name: "{{item}}"
-        state: latest
-      loop:
-        - yum-utils
-        - device-mapper-persistent-data
-        - lvm2
-        - python3
-      
-    - name: download pip script
-      get_url:
-        url: https://bootstrap.pypa.io/get-pip.py
-        dest: /tmp/get-pip.py
 
-    - name: install python-pip
-      command: python3 /tmp/get-pip.py
-
-    - name: Install docker python
-      pip:
-        name: docker-py
-        executable: /usr/local/bin/pip3
-        
   tasks:
-    - name: Add Docker CE repo
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
+
+    - name: Install device-mapper-persistent-data
+      yum:
+        name: device-mapper-persistent-data
+        state: latest
+
+    - name: Install lvm2
+      yum:
+        name: lvm2
+        state: latest
+
+    - name: Add Docker repo
       get_url:
         url: https://download.docker.com/linux/centos/docker-ce.repo
-        dest: /etc/yum.repos.d/docker-ce.repo
+        dest: /etc/yum.repos.d/docer-ce.repo
 
+    - name: Enable Docker Edge repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-edge'
+        option: enabled
+        value: 0
+
+    - name: Enable Docker Test repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-test'
+        option: enabled
+        value: 0
+      
     - name: Install Docker
-      yum: 
-        name: docker 
+      package:
+        name: docker-ce
         state: latest
 
-    - name: Start and enable the Docker daemon
-      service: 
-        name: docker 
-        state: started 
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
         enabled: yes
 
     - name: Add remote user to docker group
@@ -50,4 +56,13 @@
         groups: dockerroot
         append: yes
 
+    - name: Install pip utils
+      yum:
+        name: python3-pip
+        state: latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+        executable: pip3
 ...
