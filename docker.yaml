@@ -2,7 +2,7 @@
 - name: Install docker on a Centos 7 machine
   hosts: prod
   become: yes
-  
+  become_user: root
   
   pre_tasks:
     - name: Install pre-requisite packages
@@ -38,7 +38,6 @@
       get_url:
         url: https://download.docker.com/linux/centos/docker-ce.repo
         dest: /etc/yum.repos.d/docker-ce.repo
-      become_user: root
 
     - name: Install Docker
       yum: 
