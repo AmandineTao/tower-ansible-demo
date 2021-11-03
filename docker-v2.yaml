@@ -38,6 +38,7 @@
       yum: 
         name: docker 
         state: latest
+      become_user: root
 
     - name: Start and enable the Docker daemon
       service: 
