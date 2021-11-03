@@ -24,7 +24,7 @@
 
     - name: Install docker python
       pip:
-        name: docker-py
+        name: docker
         executable: /usr/local/bin/pip3
         
   tasks:
